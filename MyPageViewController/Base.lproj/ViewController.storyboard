@@ -18,16 +18,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3ga-2p-pct">
-                                <rect key="frame" x="129" y="433" width="156" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="MyPageViewController"/>
-                                <connections>
-                                    <action selector="pushMyPageView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LXZ-9y-4rd"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="oPz-92-y3U">
+                                <rect key="frame" x="129" y="414" width="156" height="68"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3ga-2p-pct">
+                                        <rect key="frame" x="0.0" y="0.0" width="156" height="30"/>
+                                        <state key="normal" title="MyPageViewController"/>
+                                        <connections>
+                                            <action selector="pushMyPageView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LXZ-9y-4rd"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OY6-UB-XSX">
+                                        <rect key="frame" x="0.0" y="38" width="156" height="30"/>
+                                        <state key="normal" title="withoutBounce(bug)"/>
+                                        <connections>
+                                            <action selector="pushWithoutBounces:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9mj-Lt-LVo"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="oPz-92-y3U" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="6Gg-Ov-4Bm"/>
+                            <constraint firstItem="oPz-92-y3U" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="iwJ-Cv-zlp"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>

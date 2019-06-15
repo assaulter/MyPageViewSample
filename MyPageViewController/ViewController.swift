@@ -19,5 +19,12 @@ class ViewController: UIViewController, StoryBoardInstantiatable {
     @IBAction func pushMyPageView(_ sender: Any) {
         navigationController?.pushViewController(MyPageViewController.instantiate(), animated: true)
     }
+
+    @IBAction func pushWithoutBounces(_ sender: Any) {
+        let vc = MyPageViewController.instantiate()
+        vc.bouces = false
+        navigationController?.pushViewController(vc, animated: true)
+
+    }
 }
 

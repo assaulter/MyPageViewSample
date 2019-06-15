@@ -11,6 +11,8 @@ import UIKit
 class MyPageViewController: UIViewController, StoryBoardInstantiatable {
 
     @IBOutlet private weak var tabView: TabView!
+    var bouces: Bool = true
+    private var currentPageIndex = 0
 
     private lazy var controllers: [UIViewController] = {
         return [UIColor.blue, .yellow, .green].map({ (color) -> UIViewController in
@@ -24,6 +26,13 @@ class MyPageViewController: UIViewController, StoryBoardInstantiatable {
         guard let vc = self.children.first as? UIPageViewController else { return nil }
         vc.delegate = self
         vc.dataSource = self
+
+        if !self.bouces {
+            // scrollviewを取り出し、delegateを自身にする
+            let scrollView = vc.view.subviews.compactMap { $0 as? UIScrollView }.first
+            scrollView?.delegate = self
+        }
+
         return vc
     }()
 
@@ -41,7 +50,10 @@ class MyPageViewController: UIViewController, StoryBoardInstantiatable {
 
 extension MyPageViewController: TabViewDelegate {
     func selected(index: Int) {
-        pageViewController?.setViewControllers([controllers[index]], direction: .forward
+        let direction: UIPageViewController.NavigationDirection = (currentPageIndex < index) ? .forward : .reverse
+
+        currentPageIndex = index
+        pageViewController?.setViewControllers([controllers[index]], direction: direction
             , animated: true)
     }
 }
@@ -59,5 +71,33 @@ extension MyPageViewController: UIPageViewControllerDataSource, UIPageViewContro
         if index == controllers.count - 1 { return nil }
 
         return controllers[index + 1]
+    }
+
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard completed else { return }
+
+        guard let targetViewControllers = pageViewController.viewControllers,
+            let targetViewController = targetViewControllers.last,
+            let index = controllers.firstIndex(of: targetViewController) else { return }
+
+        currentPageIndex = index
+    }
+}
+
+extension MyPageViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (currentPageIndex == 0 && scrollView.contentOffset.x < scrollView.bounds.size.width) {
+            scrollView.contentOffset = CGPoint(x: scrollView.bounds.size.width, y: 0);
+        } else if (currentPageIndex == controllers.count - 1 && scrollView.contentOffset.x > scrollView.bounds.size.width) {
+            scrollView.contentOffset = CGPoint(x: scrollView.bounds.size.width, y: 0);
+        }
+    }
+
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if (currentPageIndex == 0 && scrollView.contentOffset.x < scrollView.bounds.size.width) {
+            targetContentOffset.pointee = CGPoint(x: scrollView.bounds.size.width, y: 0);
+        } else if (currentPageIndex == controllers.count - 1 && scrollView.contentOffset.x > scrollView.bounds.size.width) {
+            targetContentOffset.pointee = CGPoint(x: scrollView.bounds.size.width, y: 0);
+        }
     }
 }
