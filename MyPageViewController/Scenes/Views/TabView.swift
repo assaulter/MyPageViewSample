@@ -8,9 +8,15 @@
 
 import UIKit
 
+protocol TabViewDelegate: class {
+    func selected(index: Int)
+}
+
 final class TabView: UIView {
 
     @IBOutlet private weak var collectionView: UICollectionView!
+
+    weak var delegate: TabViewDelegate?
     private let tabItems = ["tab1", "tab2", "tab3"]
 
     override init(frame: CGRect) {
@@ -55,5 +61,9 @@ extension TabView: UICollectionViewDataSource, UICollectionViewDelegate {
         cell.title = tabItems[indexPath.row]
 
         return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.selected(index: indexPath.row)
     }
 }
